@@ -1,0 +1,53 @@
+1.  Get a user by _id
+    db.user_tb.find({_id: ObjectId("62f4803a1862514ebb4c4322")})
+
+2.  Get user by company's name
+    db.user_tb.find({"company.name": "TCS"})
+
+3.  Get all users who are online
+    db.user_tb.find({"status.online": true})
+
+3a. Get all users who are offline
+    db.user_tb.find({"status.online": false})
+   
+4.  Get all users salary more than 30k
+    db.user_tb.find({"salary": {$gt : 30000}})
+
+5.  Update "Glenna Reichert" salary to 45000
+    db.user_tb.updateOne({"name": "Glenna Reichert"}, {$set: {salary: 45000}})
+
+6.  Get all users name & their status.message
+    db.user_tb.find({},{name: 1, "status.message":1})
+
+7.  Update "Clementina DuBuque" skills with "mysql"
+    db.user_tb.updateOne({"name": "Clementina DuBuque"}, {$set: {"skills": ["mysql"]}})
+
+8.  Remove "oracle db" skill from "Glenna Reichert"
+    db.user_tb.updateOne({"name": "Glenna Reichert"}, {$pull: {"skills": ["moracle db"]}})
+
+9.  search for user's name contains "en" - $regex
+    db.user_tb.find({name: {$regex: "en", $options: "i"}},{name:1})
+
+10. Get who's salary is less than or equal to 20k
+    db.user_tb.find({salary: {$lte: 20000}}) 
+
+11. Get user's whose status is "busy"
+    db.user_tb.find({"status.message": "busy"}) 
+
+12. Get user's whose status is "PTO" or "OOO"
+    db.user_tb.find({$or :[{"status.message": "PTO"},{"status.message": "OOO"}]}) 
+
+13. Get all interns with "react" and "angular" skills
+	db.user_tb.find({$and: [{role:"Intern"},{skills : {$all :["react" , "angular"]}} ]})
+
+14. Get all devs & interns with "react" or "angular" skills
+    db.user_tb.find({$and: [{$or: [{role:"Intern"},{role:/developer/}]},{skills : {$all :["react" , "angular"]}} ]})
+
+15. Get all 'senior devs' from "PWC" & "TCS" company
+    db.user_tb.find({$and: [{$or:[{"company.name":"TCS"},{"company.name":"PWC"}]},{role:'Senior software developer'}]})
+
+16. find first user who appears as "online". (First person while searching for online:true)
+    db.user_tb.findOne({"status.online": true})
+
+17. find all users whose role is "Senior software developer" or "Lead software developer" and company should be "IBM" or "TCS"
+    db.user_tb.find({$and: [{$or:[{"company.name":"IBM"},{"company.name":"TCS"}]},{$or:[{role:'Senior software developer'}, {role:'Lead software developer'}]}]})
